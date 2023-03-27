@@ -13,7 +13,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/EddySafc/to-do-list-be.git"
+    "url": "git+https://github.com/EddySafc/to-do-list-be.git"
   },
   "keywords": [],
   "author": "",
