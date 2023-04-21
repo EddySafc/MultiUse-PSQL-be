@@ -98,3 +98,87 @@ exports.removeMonthlyToDoById = (todo_id) => {
       return result.rows[0];
     });
 };
+
+//-------------------------------------------------------------------
+
+exports.selectUsers = () => {
+  return db.query("SELECT * FROM users;").then((result) => {
+    return result.rows;
+  });
+};
+
+// exports.selectUserById = (id) => {
+//   console.log(id);
+//   return db
+//     .query(
+//       `SELECT * FROM users
+//      WHERE user_id = $1;`,
+//       [id]
+//     )
+//     .then((result) => {
+//       console.log(result.rows);
+//       return result.rows;
+//     });
+// };
+
+exports.provideUsers = (newItem) => {
+  return db
+    .query(
+      `INSERT INTO users
+  (user_name, score)
+  VALUES
+  ($1, $2) RETURNING*`,
+      [newItem.body, 0]
+    )
+    .then((result) => {
+      return result.rows[0];
+    });
+};
+
+exports.updateUsers = (user_id, inc_score) => {
+  console.log("user_id:", user_id, "inc_score:", inc_score);
+  return db
+    .query(
+      `UPDATE users
+    SET score = score + $1
+    WHERE user_id = $2
+    RETURNING*;`,
+      [inc_score, user_id]
+    )
+    .then((result) => {
+      if (!result.rows[0]) {
+        return Promise.reject({ status: 404, msg: "id not found" });
+      }
+      return result.rows[0];
+    });
+};
+
+exports.updateReviewVotes = (review_id, inc_votes) => {
+  return db
+    .query(
+      `UPDATE reviews
+    SET votes = votes + $1
+    WHERE review_id = $2
+    RETURNING*;`,
+      [inc_votes, review_id]
+    )
+    .then((result) => {
+      if (!result.rows[0]) {
+        return Promise.reject({ status: 404, msg: "id not found" });
+      }
+      return result.rows;
+    });
+};
+
+exports.removeUserById = (user_id) => {
+  return db
+    .query(
+      `DELETE FROM users
+    WHERE user_id = $1
+    RETURNING*;`,
+      [user_id]
+    )
+    .then((result) => {
+      return result.rows[0];
+    });
+};

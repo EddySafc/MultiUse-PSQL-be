@@ -7,8 +7,9 @@ const {
   dailyData,
   weeklyData,
   monthlyData,
+  userData,
 } = require("../db/data/test-data/index");
-beforeEach(() => seed({ dailyData, weeklyData, monthlyData }));
+beforeEach(() => seed({ dailyData, weeklyData, monthlyData, userData }));
 afterAll(() => {
   return db.end();
 });
@@ -73,5 +74,43 @@ describe("12. DELETE /api/weeklys/:todo_id", () => {
 describe("12. DELETE /api/monthlys/:todo_id", () => {
   test("should delete the given monthly todo by todo_id and respond with 204 and no content", () => {
     return request(app).delete("/api/monthlys/1").expect(204);
+  });
+});
+
+//-----------------------------------------------------------------------
+
+describe("GET users", () => {
+  test("GET 200 - respond with all users", () => {
+    return request(app).get("/api/users").expect(200);
+  });
+});
+
+// describe("GET user by Id", () => {
+//   test("GET 200 - respond with a user by a given Id", () => {
+//     return request(app).get("/api/users/1").expect(200);
+//   });
+// });
+
+describe("POST item to users", () => {
+  test("POST 201 - post new user to users", () => {
+    return request(app)
+      .post("/api/users")
+      .send({ body: "greg", item_id: 99 })
+      .expect(201);
+  });
+});
+
+describe("PATCH score of user", () => {
+  test("should increment the users score by the amount provided", () => {
+    return request(app)
+      .patch("/api/users/1")
+      .send({ inc_score: 1 })
+      .expect(201);
+  });
+});
+
+describe("12. DELETE /api/users/:user_id", () => {
+  test("should delete the given user by user_id and respond with 204 and no content", () => {
+    return request(app).delete("/api/users/1").expect(204);
   });
 });
