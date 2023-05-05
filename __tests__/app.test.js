@@ -16,7 +16,55 @@ afterAll(() => {
 
 describe("GET dailys", () => {
   test("GET 200 - respond with all daily todos", () => {
-    return request(app).get("/api/dailys").expect(200);
+    return request(app)
+      .get("/api/dailys")
+      .expect(200)
+      .then(({ body }) => {
+        console.log("body:", body);
+        expect(body.result.length).toBe(3);
+        body.result.forEach((user) => {
+          expect(user).toMatchObject({
+            todo_id: expect.any(Number),
+            todo_name: expect.any(String),
+          });
+        });
+      });
+  });
+});
+
+describe("GET weeklys", () => {
+  test("GET 200 - respond with all weekly todos", () => {
+    return request(app)
+      .get("/api/weeklys")
+      .expect(200)
+      .then(({ body }) => {
+        console.log("body:", body);
+        expect(body.result.length).toBe(3);
+        body.result.forEach((user) => {
+          expect(user).toMatchObject({
+            todo_id: expect.any(Number),
+            todo_name: expect.any(String),
+          });
+        });
+      });
+  });
+});
+
+describe("GET monthlys", () => {
+  test("GET 200 - respond with all monthly todos", () => {
+    return request(app)
+      .get("/api/monthlys")
+      .expect(200)
+      .then(({ body }) => {
+        console.log("body:", body);
+        expect(body.result.length).toBe(3);
+        body.result.forEach((user) => {
+          expect(user).toMatchObject({
+            todo_id: expect.any(Number),
+            todo_name: expect.any(String),
+          });
+        });
+      });
   });
 });
 
@@ -27,11 +75,11 @@ describe("POST item to dailys", () => {
       .send({ body: "walk", item_id: 99 })
       .expect(201);
   });
-});
-
-describe("GET weeklys", () => {
-  test("GET 200 - respond with all weekly todos", () => {
-    return request(app).get("/api/weeklys").expect(200);
+  test("POST 400 - bad request", () => {
+    return request(app)
+      .post("/api/dailys")
+      .send({ blabla: "blabla", item_id: 77 })
+      .expect(400);
   });
 });
 
@@ -42,11 +90,11 @@ describe("POST item to weeklys", () => {
       .send({ body: "run 10km", item_id: 99 })
       .expect(201);
   });
-});
-
-describe("GET monthlys", () => {
-  test("GET 200 - respond with all monthly todos", () => {
-    return request(app).get("/api/monthlys").expect(200);
+  test("POST 400 - bad request", () => {
+    return request(app)
+      .post("/api/weeklys")
+      .send({ blabla: "blabla", item_id: 77 })
+      .expect(400);
   });
 });
 
@@ -56,6 +104,12 @@ describe("POST item to monthlys", () => {
       .post("/api/monthlys")
       .send({ body: "swim", item_id: 99 })
       .expect(201);
+  });
+  test("POST 400 - bad request", () => {
+    return request(app)
+      .post("/api/monthlys")
+      .send({ blabla: "blabla", item_id: 77 })
+      .expect(400);
   });
 });
 
@@ -81,7 +135,20 @@ describe("12. DELETE /api/monthlys/:todo_id", () => {
 
 describe("GET users", () => {
   test("GET 200 - respond with all users", () => {
-    return request(app).get("/api/users").expect(200);
+    return request(app)
+      .get("/api/users")
+      .expect(200)
+      .then(({ body }) => {
+        console.log("body:", body);
+        expect(body.result.length).toBe(2);
+        body.result.forEach((user) => {
+          expect(user).toMatchObject({
+            score: expect.any(Number),
+            user_id: expect.any(Number),
+            user_name: expect.any(String),
+          });
+        });
+      });
   });
 });
 
@@ -112,5 +179,18 @@ describe("PATCH score of user", () => {
 describe("12. DELETE /api/users/:user_id", () => {
   test("should delete the given user by user_id and respond with 204 and no content", () => {
     return request(app).delete("/api/users/1").expect(204);
+  });
+});
+
+//-------------------------------------------------------------------------
+
+describe("ERROR 404 - end point not found", () => {
+  test("if the end point is not found a message saying link not found is returned", () => {
+    return request(app)
+      .get("/sfjkbwkjdbwkjf")
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toEqual("link not found");
+      });
   });
 });

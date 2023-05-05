@@ -16,52 +16,76 @@ const {
   updateUsers,
 } = require("./model");
 
-exports.getDailys = (req, res) => {
-  selectDailys().then((result) => {
-    console.log("get dailys:", result);
-    res.send({ result });
-  });
+exports.getDailys = (req, res, next) => {
+  selectDailys()
+    .then((result) => {
+      console.log("get dailys:", result);
+      res.send({ result });
+    })
+    .catch((err) => {
+      next(err);
+    });
 };
 
-exports.getWeeklys = (req, res) => {
-  selectWeeklys().then((result) => {
-    console.log("get weeklys:", result);
-    res.send({ result });
-  });
+exports.getWeeklys = (req, res, next) => {
+  selectWeeklys()
+    .then((result) => {
+      console.log("get weeklys:", result);
+      res.send({ result });
+    })
+    .catch((err) => {
+      next(err);
+    });
 };
 
-exports.getMonthlys = (req, res) => {
-  selectMonthlys().then((result) => {
-    console.log("get monthlys:", result);
-    res.send({ result });
-  });
+exports.getMonthlys = (req, res, next) => {
+  selectMonthlys()
+    .then((result) => {
+      console.log("get monthlys:", result);
+      res.send({ result });
+    })
+    .catch((err) => {
+      next(err);
+    });
 };
 
-exports.postDaily = (req, res) => {
+exports.postDaily = (req, res, next) => {
   const newItem = req.body;
-  provideDailys(newItem).then((result) => {
-    console.log("post daily:", result);
-    res.status(201).send({ result });
-  });
+  provideDailys(newItem)
+    .then((result) => {
+      console.log("post daily:", result);
+      res.status(201).send({ result });
+    })
+    .catch((err) => {
+      next(err);
+    });
 };
 
-exports.postWeekly = (req, res) => {
+exports.postWeekly = (req, res, next) => {
   const newItem = req.body;
-  provideWeeklys(newItem).then((result) => {
-    console.log("post weekly:", result);
-    res.status(201).send({ result });
-  });
+  provideWeeklys(newItem)
+    .then((result) => {
+      console.log("post weekly:", result);
+      res.status(201).send({ result });
+    })
+    .catch((err) => {
+      next(err);
+    });
 };
 
-exports.postMonthly = (req, res) => {
+exports.postMonthly = (req, res, next) => {
   const newItem = req.body;
-  provideMonthlys(newItem).then((result) => {
-    console.log("post monthly:", result);
-    res.status(201).send({ result });
-  });
+  provideMonthlys(newItem)
+    .then((result) => {
+      console.log("post monthly:", result);
+      res.status(201).send({ result });
+    })
+    .catch((err) => {
+      next(err);
+    });
 };
 
-exports.deleteDailyById = (req, res) => {
+exports.deleteDailyById = (req, res, next) => {
   const { todo_id } = req.params;
   removeDailyToDoById(todo_id).then((result) => {
     console.log(result);
@@ -69,7 +93,7 @@ exports.deleteDailyById = (req, res) => {
   });
 };
 
-exports.deleteWeeklyById = (req, res) => {
+exports.deleteWeeklyById = (req, res, next) => {
   const { todo_id } = req.params;
   removeWeeklyToDoById(todo_id).then((result) => {
     console.log(result);
@@ -77,7 +101,7 @@ exports.deleteWeeklyById = (req, res) => {
   });
 };
 
-exports.deleteMonthlyById = (req, res) => {
+exports.deleteMonthlyById = (req, res, next) => {
   const { todo_id } = req.params;
   removeMonthlyToDoById(todo_id).then((result) => {
     console.log(result);

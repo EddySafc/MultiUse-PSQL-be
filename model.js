@@ -19,6 +19,9 @@ exports.selectMonthlys = () => {
 };
 
 exports.provideDailys = (newItem) => {
+  if (newItem.hasOwnProperty("body") === false) {
+    return Promise.reject({ status: 400, msg: "bad request" });
+  }
   return db
     .query(
       `INSERT INTO dailys
@@ -29,10 +32,16 @@ exports.provideDailys = (newItem) => {
     )
     .then((result) => {
       return result.rows[0];
+    })
+    .catch((err) => {
+      return Promise.reject(err);
     });
 };
 
 exports.provideWeeklys = (newItem) => {
+  if (newItem.hasOwnProperty("body") === false) {
+    return Promise.reject({ status: 400, msg: "bad request" });
+  }
   return db
     .query(
       `INSERT INTO weeklys
@@ -43,10 +52,16 @@ exports.provideWeeklys = (newItem) => {
     )
     .then((result) => {
       return result.rows[0];
+    })
+    .catch((err) => {
+      return Promise.reject(err);
     });
 };
 
 exports.provideMonthlys = (newItem) => {
+  if (newItem.hasOwnProperty("body") === false) {
+    return Promise.reject({ status: 400, msg: "bad request" });
+  }
   return db
     .query(
       `INSERT INTO monthlys
@@ -57,6 +72,9 @@ exports.provideMonthlys = (newItem) => {
     )
     .then((result) => {
       return result.rows[0];
+    })
+    .catch((err) => {
+      return Promise.reject(err);
     });
 };
 
@@ -102,7 +120,7 @@ exports.removeMonthlyToDoById = (todo_id) => {
 //-------------------------------------------------------------------
 
 exports.selectUsers = () => {
-  return db.query("SELECT * FROM users;").then((result) => {
+  return db.query("SELECT * FROM users ORDER BY score DESC;").then((result) => {
     return result.rows;
   });
 };
