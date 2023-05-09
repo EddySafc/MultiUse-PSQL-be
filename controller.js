@@ -14,6 +14,10 @@ const {
   selectUserById,
   changeUsers,
   updateUsers,
+  selectRecipes,
+  provideRecipe,
+  provideIngredients,
+  selectIngredients,
 } = require("./model");
 
 exports.getDailys = (req, res, next) => {
@@ -118,15 +122,6 @@ exports.getUsers = (req, res) => {
   });
 };
 
-// exports.getUserById = (req, res) => {
-//   const { user_id } = req.params;
-//   console.log(user_id);
-//   selectUserById(user_id).then((result) => {
-//     console.log(result);
-//     res.send({ result });
-//   });
-// };
-
 exports.postUsers = (req, res) => {
   const newItem = req.body;
   provideUsers(newItem).then((result) => {
@@ -161,5 +156,35 @@ exports.deleteUserById = (req, res) => {
   removeUserById(user_id).then((result) => {
     console.log(result);
     res.status(204).send(result);
+  });
+};
+
+//-------------------------------------------------------------------
+
+exports.getRecipes = (req, res) => {
+  selectRecipes().then((result) => {
+    res.send({ result });
+  });
+};
+
+exports.postRecipe = (req, res) => {
+  const newRecipe = req.body;
+  provideRecipe(newRecipe).then((result) => {
+    res.status(201).send({ result });
+  });
+};
+
+exports.postIngredients = (req, res) => {
+  const newIngredients = req.body;
+  provideIngredients(newIngredients).then((result) => {
+    console.log("post shopping_list:", result);
+    res.status(201).send({ result });
+  });
+};
+
+exports.getIngredients = (req, res) => {
+  selectIngredients().then((result) => {
+    console.log("get shopping_list:", { result });
+    res.send({ result });
   });
 };

@@ -8,8 +8,19 @@ const {
   weeklyData,
   monthlyData,
   userData,
+  recipeData,
+  shoppingListData,
 } = require("../db/data/test-data/index");
-beforeEach(() => seed({ dailyData, weeklyData, monthlyData, userData }));
+beforeEach(() =>
+  seed({
+    dailyData,
+    weeklyData,
+    monthlyData,
+    userData,
+    recipeData,
+    shoppingListData,
+  })
+);
 afterAll(() => {
   return db.end();
 });
@@ -152,12 +163,6 @@ describe("GET users", () => {
   });
 });
 
-// describe("GET user by Id", () => {
-//   test("GET 200 - respond with a user by a given Id", () => {
-//     return request(app).get("/api/users/1").expect(200);
-//   });
-// });
-
 describe("POST item to users", () => {
   test("POST 201 - post new user to users", () => {
     return request(app)
@@ -183,6 +188,63 @@ describe("12. DELETE /api/users/:user_id", () => {
 });
 
 //-------------------------------------------------------------------------
+
+describe("GET all_recipes", () => {
+  test("GET 200 - respond with all recipes", () => {
+    return request(app)
+      .get("/api/recipes")
+      .expect(200)
+      .then(({ body }) => {
+        console.log("body:", body);
+        expect(body.result.length).toBe(4);
+        body.result.forEach((recipe) => {
+          expect(recipe).toMatchObject({
+            recipe_id: expect.any(Number),
+            recipe_name: expect.any(String),
+            recipe_pic: expect.any(String),
+          });
+        });
+      });
+  });
+});
+
+describe("POST recipe to all_recipes", () => {
+  test("POST 201 - post new recipe to all_recipes", () => {
+    return request(app)
+      .post("/api/recipes")
+      .send({ body: "cheese sarny", pic: "cheese" })
+      .expect(201);
+  });
+});
+
+describe("GET shopping_list", () => {
+  test("GET 200 - respond with all ingredients in shopping list", () => {
+    return request(app)
+      .get("/api/shopping_list")
+      .expect(200)
+      .then(({ body }) => {
+        console.log("body:", body);
+        expect(body.result.length).toBe(4);
+        body.result.forEach((list) => {
+          expect(list).toMatchObject({
+            ingredient: expect.any(String),
+            measure: expect.any(String),
+          });
+        });
+      });
+  });
+});
+
+describe("POST ingredients to shopping_list", () => {
+  test("POST 201 - post new ingredients to shopping_list", () => {
+    return request(app)
+      .post("/api/shopping_list")
+      .send({ body: ["cheese", "bread", "butter"] })
+      .expect(201);
+  });
+});
+
+//--------------------------------------------------------------------
 
 describe("ERROR 404 - end point not found", () => {
   test("if the end point is not found a message saying link not found is returned", () => {

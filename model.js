@@ -119,26 +119,6 @@ exports.removeMonthlyToDoById = (todo_id) => {
 
 //-------------------------------------------------------------------
 
-exports.selectUsers = () => {
-  return db.query("SELECT * FROM users ORDER BY score DESC;").then((result) => {
-    return result.rows;
-  });
-};
-
-// exports.selectUserById = (id) => {
-//   console.log(id);
-//   return db
-//     .query(
-//       `SELECT * FROM users
-//      WHERE user_id = $1;`,
-//       [id]
-//     )
-//     .then((result) => {
-//       console.log(result.rows);
-//       return result.rows;
-//     });
-// };
-
 exports.provideUsers = (newItem) => {
   return db
     .query(
@@ -151,6 +131,12 @@ exports.provideUsers = (newItem) => {
     .then((result) => {
       return result.rows[0];
     });
+};
+
+exports.selectUsers = () => {
+  return db.query("SELECT * FROM users ORDER BY score DESC;").then((result) => {
+    return result.rows;
+  });
 };
 
 exports.updateUsers = (user_id, inc_score) => {
@@ -199,4 +185,46 @@ exports.removeUserById = (user_id) => {
     .then((result) => {
       return result.rows[0];
     });
+};
+
+//--------------------------------------------------------------------
+
+exports.selectRecipes = () => {
+  return db.query("SELECT * FROM all_recipes;").then((result) => {
+    return result.rows;
+  });
+};
+
+exports.provideRecipe = (newRecipe) => {
+  return db
+    .query(
+      `INSERT INTO all_recipes 
+  (recipe_name, recipe_pic)
+  VALUES
+  ($1,$2) RETURNING*`,
+      [newRecipe.body, newRecipe.recipe_pic]
+    )
+    .then((result) => {
+      return result.rows[0];
+    });
+};
+
+exports.provideIngredients = (newIngredients) => {
+  return db
+    .query(
+      `INSERT INTO shopping_list
+    (ingredient, measure)
+    VALUES
+    ($1, $2) RETURNING*`,
+      [newIngredients.body, newIngredients.measure_body]
+    )
+    .then((result) => {
+      return result.rows;
+    });
+};
+
+exports.selectIngredients = () => {
+  return db.query(`SELECT * FROM shopping_list;`).then((result) => {
+    return result.rows;
+  });
 };

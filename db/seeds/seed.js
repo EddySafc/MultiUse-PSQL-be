@@ -7,10 +7,14 @@ const seed = async (data) => {
   const weeklyData = data.weeklyData;
   const monthlyData = data.monthlyData;
   const userData = data.userData;
+  const recipeData = data.recipeData;
+  const shoppingListData = data.shoppingListData;
 
   await db.query(`DROP TABLE IF EXISTS dailys;`);
   await db.query(`DROP TABLE IF EXISTS weeklys;`);
   await db.query(`DROP TABLE IF EXISTS monthlys;`);
+  await db.query(`DROP TABLE IF EXISTS all_recipes;`);
+  await db.query(`DROP TABLE IF EXISTS shopping_list`);
 
   await db.query(`CREATE TABLE dailys (
     todo_id SERIAL,
@@ -27,32 +31,32 @@ const seed = async (data) => {
     todo_name TEXT
   );`);
 
-  // const insertDailyQueryStr = format(
-  //   `INSERT INTO dailys
-  //   (todo_name)
-  // VALUES %L RETURNING *;`,
-  //   dailyData.map(({ body }) => [body])
-  // );
+  const insertDailyQueryStr = format(
+    `INSERT INTO dailys
+    (todo_name)
+  VALUES %L RETURNING *;`,
+    dailyData.map(({ body }) => [body])
+  );
 
-  // await db.query(insertDailyQueryStr).then((result) => result.rows);
+  await db.query(insertDailyQueryStr).then((result) => result.rows);
 
-  // const insertWeeklyQueryStr = format(
-  //   `INSERT INTO weeklys
-  //   (todo_name)
-  // VALUES %L RETURNING *;`,
-  //   weeklyData.map(({ body }) => [body])
-  // );
+  const insertWeeklyQueryStr = format(
+    `INSERT INTO weeklys
+    (todo_name)
+  VALUES %L RETURNING *;`,
+    weeklyData.map(({ body }) => [body])
+  );
 
-  // await db.query(insertWeeklyQueryStr).then((result) => result.rows);
+  await db.query(insertWeeklyQueryStr).then((result) => result.rows);
 
-  // const insertmonthlyQueryStr = format(
-  //   `INSERT INTO monthlys
-  //   (todo_name)
-  // VALUES %L RETURNING *;`,
-  //   monthlyData.map(({ body }) => [body])
-  // );
+  const insertmonthlyQueryStr = format(
+    `INSERT INTO monthlys
+    (todo_name)
+  VALUES %L RETURNING *;`,
+    monthlyData.map(({ body }) => [body])
+  );
 
-  // await db.query(insertmonthlyQueryStr).then((result) => result.rows);
+  await db.query(insertmonthlyQueryStr).then((result) => result.rows);
 
   //-------------------------------------------------
 
@@ -64,14 +68,44 @@ const seed = async (data) => {
    score INT
     );`);
 
-  // const insertuserQueryStr = format(
-  //   `INSERT INTO users
-  //   (user_name, score)
-  // VALUES %L RETURNING *;`,
-  //   userData.map(({ user_name, score }) => [user_name, score])
-  // );
+  const insertuserQueryStr = format(
+    `INSERT INTO users
+    (user_name, score)
+  VALUES %L RETURNING *;`,
+    userData.map(({ user_name, score }) => [user_name, score])
+  );
 
-  // await db.query(insertuserQueryStr).then((result) => result.rows);
+  await db.query(insertuserQueryStr).then((result) => result.rows);
+
+  //-------------------------------------------------------------
+
+  await db.query(`CREATE TABLE all_recipes (
+  recipe_id SERIAL,
+  recipe_name TEXT,
+  recipe_pic TEXT
+  );`);
+
+  await db.query(`CREATE TABLE shopping_list (
+  ingredient TEXT,
+  measure TEXT
+  )`);
+
+  const insertRecipeQueryStr = format(
+    `INSERT INTO all_recipes
+    (recipe_name, recipe_pic)
+  VALUES %L RETURNING *;`,
+    recipeData.map(({ body, pic }) => [body, pic])
+  );
+
+  await db.query(insertRecipeQueryStr).then((result) => result.rows);
+
+  const insertShoppingListQueryStr = format(
+    `INSERT INTO shopping_list
+    (ingredient, measure)
+  VALUES %L RETURNING *;`,
+    shoppingListData.map(({ ingredient, measure }) => [ingredient, measure])
+  );
+
+  await db.query(insertShoppingListQueryStr).then((result) => result.rows);
 };
-
 module.exports = seed;

@@ -15,12 +15,17 @@ const {
   getUsers,
   postUsers,
   deleteUserById,
-  getUserById,
   patchUsers,
+  getRecipes,
+  postRecipe,
+  postIngredients,
+  getIngredients,
 } = require("./controller");
 
 app.use(cors());
 app.use(express.json());
+
+//-------------ToDoList Project--------------------------
 
 app.get("/api/dailys", getDailys);
 app.get("/api/weeklys", getWeeklys);
@@ -34,13 +39,19 @@ app.delete("/api/dailys/:todo_id", deleteDailyById);
 app.delete("/api/weeklys/:todo_id", deleteWeeklyById);
 app.delete("/api/monthlys/:todo_id", deleteMonthlyById);
 
-//---------------------------------------------------
+//---------------User LogIn Game Project------------------------------------
 
 app.get("/api/users", getUsers);
-// app.get("/api/users/:user_id", getUserById);
 app.post("/api/users", postUsers);
 app.patch("/api/users/:user_id", patchUsers);
 app.delete("/api/users/:user_id", deleteUserById);
+
+//--------------Recipe Project--------------------------------
+
+app.post("/api/recipes", postRecipe);
+app.get("/api/recipes", getRecipes);
+app.post("/api/shopping_list", postIngredients);
+app.get("/api/shopping_list", getIngredients);
 
 //------------Error Handling--------------------------
 
