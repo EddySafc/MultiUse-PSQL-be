@@ -24,11 +24,7 @@ const {
 app.use(cors());
 app.use(express.json());
 
-app.get("/", getEndpointsDescription);
-
-// app.get("/*", (req, res) => {
-//   res.status(404).send({ msg: "link not found" });
-// });
+app.get("/api", getEndpointsDescription);
 
 //-------------ToDoList Project--------------------------
 
