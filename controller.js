@@ -14,17 +14,10 @@ const {
   updateUsers,
   selectRecipes,
   provideRecipe,
-  fetchEndPointsDescription,
 } = require("./model");
 
-exports.getEndpointsDescription = (req, res, next) => {
-  fetchEndPointsDescription()
-    .then((result) => {
-      res.send({ result });
-    })
-    .catch((err) => {
-      next(err);
-    });
+exports.getEndpointsDescription = () => {
+  res.status(404).send({ msg: "endpoints:" });
 };
 
 exports.getDailys = (req, res, next) => {

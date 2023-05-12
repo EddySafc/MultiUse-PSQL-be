@@ -24,11 +24,7 @@ const {
 app.use(cors());
 app.use(express.json());
 
-//app.get("/api", getEndpointsDescription);
-
-app.get("/api", (req, res) => {
-  res.status(404).send({ msg: "endpoints:" });
-});
+app.get("/", getEndpointsDescription);
 
 //-------------ToDoList Project--------------------------
 

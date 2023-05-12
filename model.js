@@ -1,9 +1,5 @@
 const db = require("./db/connection");
 
-exports.fetchEndPointsDescription = () => {
-  return "hello";
-};
-
 exports.selectDailys = () => {
   return db.query("SELECT * FROM dailys;").then((result) => {
     return result.rows;
