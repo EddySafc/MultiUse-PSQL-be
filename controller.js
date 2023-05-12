@@ -17,7 +17,7 @@ const {
 } = require("./model");
 
 exports.getEndpointsDescription = () => {
-  res.status(404).send({ msg: "endpoints:" });
+  res.send({ msg: "endpoints:" });
 };
 
 exports.getDailys = (req, res, next) => {
