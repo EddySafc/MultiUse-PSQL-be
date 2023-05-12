@@ -7,7 +7,7 @@ To-Do-List-fe
 FireBaseGame-fe
 Recipe-Project-fe
 
-# Northcoders Game Reviews API
+# Multi Use BE API
 
 ## Summary
 
@@ -50,11 +50,7 @@ To clone you must first:
 
   This will first create the Databases called `nc_games` and `nc_games_test`. Then populate those with data from the seed file.
 
-- I have provided a full test suite to confirm the functionality of this API and if you chose to edit the code this will be helpful to make sure everything is still working. You can test using the following.
-
-  ```sh
-  npm test __tests__/app.test.js
-  ```
+- I have provided a full test suite to confirm the functionality of this API and if you chose to edit the code this will be helpful to make sure everything is still working.
 
 - Finally to host locally you can run the script 'start' like this.
   ```sh
