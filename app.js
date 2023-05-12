@@ -24,7 +24,7 @@ const {
 app.use(cors());
 app.use(express.json());
 
-app.get("/", getEndpointsDescription);
+app.get("/api", getEndpointsDescription);
 
 //-------------ToDoList Project--------------------------
 
