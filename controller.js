@@ -20,7 +20,7 @@ const {
 exports.getEndpointsDescription = (req, res, next) => {
   fetchEndPointsDescription()
     .then((result) => {
-      res.send(result);
+      res.send({ result });
     })
     .catch((err) => {
       next(err);
