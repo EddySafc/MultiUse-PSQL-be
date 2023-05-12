@@ -18,8 +18,8 @@ const {
   patchUsers,
   getRecipes,
   postRecipe,
-  getEndpointsDescription,
 } = require("./controller");
+const { getEndpointsDescription } = require("./endpoints");
 
 app.use(cors());
 app.use(express.json());

@@ -1,5 +1,5 @@
-exports.fetchEndpointsDescription = () => {
-  return {
+exports.getEndpointsDescription = (req, res, next) => {
+  res.send({
     "GET /api": {
       description:
         "serves up a json representation of all the available endpoints of the api",
@@ -28,5 +28,5 @@ exports.fetchEndpointsDescription = () => {
         topics: [{ todo_id: 9, todo: "Mow Lawn" }],
       },
     },
-  };
+  });
 };

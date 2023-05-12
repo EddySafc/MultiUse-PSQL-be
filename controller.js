@@ -1,4 +1,3 @@
-const { fetchEndpointsDescription } = require("./endpoints");
 const {
   selectDailys,
   provideDailys,
@@ -16,46 +15,6 @@ const {
   selectRecipes,
   provideRecipe,
 } = require("./model");
-
-exports.getEndpointsDescription = (req, res, next) => {
-  res.send({
-    "GET /api": {
-      description:
-        "serves up a json representation of all the available endpoints of the api",
-      exampleResponse: {
-        endpoints: [{ This: "File" }],
-      },
-    },
-    "GET /api/dailys": {
-      description: "serves an array of all daily to dos",
-      queries: [],
-      exampleResponse: {
-        topics: [{ todo_id: 1, todo: "Run" }],
-      },
-    },
-    "GET /api/weeklys": {
-      description: "serves an array of all weekly to dos",
-      queries: [],
-      exampleResponse: {
-        topics: [{ todo_id: 7, todo: "Hoover" }],
-      },
-    },
-    "GET /api/monthlys": {
-      description: "serves an array of all monthly to dos",
-      queries: [],
-      exampleResponse: {
-        topics: [{ todo_id: 9, todo: "Mow Lawn" }],
-      },
-    },
-  });
-  // fetchEndpointsDescription()
-  //   .then((result) => {
-  //     res.send({ result });
-  //   })
-  //   .catch((err) => {
-  //     next(err);
-  //   });
-};
 
 exports.getDailys = (req, res, next) => {
   selectDailys()
