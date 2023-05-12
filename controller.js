@@ -17,10 +17,14 @@ const {
   provideRecipe,
 } = require("./model");
 
-exports.getEndpointsDescription = (req, res) => {
-  fetchEndpointsDescription().then((result) => {
-    res.send(result);
-  });
+exports.getEndpointsDescription = (req, res, next) => {
+  fetchEndpointsDescription()
+    .then((result) => {
+      res.send(result);
+    })
+    .catch((err) => {
+      next(err);
+    });
 };
 
 exports.getDailys = (req, res, next) => {
