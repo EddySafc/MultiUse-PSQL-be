@@ -80,47 +80,155 @@ describe("GET monthlys", () => {
 });
 
 describe("POST item to dailys", () => {
-  test("POST 201 - post new recipe to all_dailys", () => {
+  test("POST 201 - post new todo to all_dailys", () => {
     return request(app)
       .post("/api/dailys")
       .send({ body: "walk", item_id: 99 })
-      .expect(201);
+      .expect(201)
+      .then(({ body }) => {
+        expect(body.result).toMatchObject({
+          todo_id: 99,
+          todo_name: "walk",
+        });
+      });
   });
-  test("POST 400 - bad request", () => {
+  test("POST 400 - bad request, wrong body name", () => {
     return request(app)
       .post("/api/dailys")
-      .send({ blabla: "blabla", item_id: 77 })
-      .expect(400);
+      .send({ boddy: "blabla", item_id: 77 })
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("bad request");
+      });
+  });
+  test("POST 400 - bad request, wrong item id name", () => {
+    return request(app)
+      .post("/api/dailys")
+      .send({ body: "blabla", id_of_item: 77 })
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("bad request");
+      });
+  });
+  test("POST 400 - Missing item_id", () => {
+    return request(app)
+      .post("/api/dailys")
+      .send({ body: "blabla" })
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("bad request");
+      });
+  });
+  test("POST 400 - Missing body", () => {
+    return request(app)
+      .post("/api/dailys")
+      .send({ item_id: 45 })
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("bad request");
+      });
   });
 });
 
 describe("POST item to weeklys", () => {
-  test("POST 201 - post new recipe to weeklys", () => {
+  test("POST 201 - post new todo to weeklys", () => {
     return request(app)
       .post("/api/weeklys")
       .send({ body: "run 10km", item_id: 99 })
-      .expect(201);
+      .expect(201)
+      .then(({ body }) => {
+        expect(body.result).toMatchObject({
+          todo_id: 99,
+          todo_name: "run 10km",
+        });
+      });
   });
-  test("POST 400 - bad request", () => {
+  test("POST 400 - bad request, wrong body name", () => {
     return request(app)
       .post("/api/weeklys")
-      .send({ blabla: "blabla", item_id: 77 })
-      .expect(400);
+      .send({ boddy: "blabla", item_id: 77 })
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("bad request");
+      });
+  });
+  test("POST 400 - bad request, wrong item id name", () => {
+    return request(app)
+      .post("/api/weeklys")
+      .send({ body: "blabla", id_of_item: 77 })
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("bad request");
+      });
+  });
+  test("POST 400 - Missing item_id", () => {
+    return request(app)
+      .post("/api/weeklys")
+      .send({ body: "blabla" })
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("bad request");
+      });
+  });
+  test("POST 400 - Missing body", () => {
+    return request(app)
+      .post("/api/weeklys")
+      .send({ item_id: 45 })
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("bad request");
+      });
   });
 });
 
 describe("POST item to monthlys", () => {
-  test("POST 201 - post new recipe to monthlys", () => {
+  test("POST 201 - post new todo to monthlys", () => {
     return request(app)
       .post("/api/monthlys")
       .send({ body: "swim", item_id: 99 })
-      .expect(201);
+      .expect(201)
+      .then(({ body }) => {
+        expect(body.result).toMatchObject({
+          todo_id: 99,
+          todo_name: "swim",
+        });
+      });
   });
-  test("POST 400 - bad request", () => {
+  test("POST 400 - bad request, wrong body name", () => {
     return request(app)
       .post("/api/monthlys")
-      .send({ blabla: "blabla", item_id: 77 })
-      .expect(400);
+      .send({ boddy: "blabla", item_id: 77 })
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("bad request");
+      });
+  });
+  test("POST 400 - bad request, wrong item id name", () => {
+    return request(app)
+      .post("/api/monthlys")
+      .send({ body: "blabla", id_of_item: 77 })
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("bad request");
+      });
+  });
+  test("POST 400 - Missing item_id", () => {
+    return request(app)
+      .post("/api/monthlys")
+      .send({ body: "blabla" })
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("bad request");
+      });
+  });
+  test("POST 400 - Missing body", () => {
+    return request(app)
+      .post("/api/monthlys")
+      .send({ item_id: 45 })
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("bad request");
+      });
   });
 });
 
@@ -167,17 +275,78 @@ describe("POST item to users", () => {
   test("POST 201 - post new user to users", () => {
     return request(app)
       .post("/api/users")
-      .send({ body: "greg", item_id: 99 })
-      .expect(201);
+      .send({ body: "greg" })
+      .expect(201)
+      .then(({ body }) => {
+        expect(body.result).toMatchObject({
+          user_id: 3,
+          user_name: "greg",
+          score: 0,
+        });
+      });
+  });
+  test("POST 400 - bad request, wrong body name", () => {
+    return request(app)
+      .post("/api/users")
+      .send({ boddy: "jog" })
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("bad request");
+      });
   });
 });
 
 describe("PATCH score of user", () => {
-  test("should increment the users score by the amount provided", () => {
+  test("PATCH 201 - should increment the users score by the amount provided", () => {
     return request(app)
       .patch("/api/users/1")
       .send({ inc_score: 1 })
       .expect(201);
+  });
+  test("PATCH 400 - inc_score is spelt wrong", () => {
+    return request(app)
+      .patch("/api/users/1")
+      .send({ ink_score: 1 })
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("bad request");
+      });
+  });
+  test("PATCH 400 - user id is invalid", () => {
+    return request(app)
+      .patch("/api/users/one")
+      .send({ inc_score: 1 })
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("bad request");
+      });
+  });
+  test("PATCH 404 - user id not found", () => {
+    return request(app)
+      .patch("/api/users/513")
+      .send({ inc_score: 1 })
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe("id not found");
+      });
+  });
+  test("PATCH 400 - missing fields", () => {
+    return request(app)
+      .patch("/api/users/1")
+      .send({})
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("bad request");
+      });
+  });
+  test("PATCH 400 - incorrect data type value", () => {
+    return request(app)
+      .patch("/api/users/1")
+      .send({ inc_score: "one" })
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("bad request");
+      });
   });
 });
 
@@ -213,34 +382,32 @@ describe("POST recipe to all_recipes", () => {
     return request(app)
       .post("/api/recipes")
       .send({ body: "cheese sarny", pic: "cheese" })
-      .expect(201);
-  });
-});
-
-describe("GET shopping_list", () => {
-  test("GET 200 - respond with all ingredients in shopping list", () => {
-    return request(app)
-      .get("/api/shopping_list")
-      .expect(200)
+      .expect(201)
       .then(({ body }) => {
-        console.log("body:", body);
-        expect(body.result.length).toBe(4);
-        body.result.forEach((list) => {
-          expect(list).toMatchObject({
-            ingredient: expect.any(String),
-            measure: expect.any(String),
-          });
+        expect(body.result).toMatchObject({
+          recipe_id: 5,
+          recipe_name: "cheese sarny",
+          recipe_pic: null,
         });
       });
   });
-});
-
-describe("POST ingredients to shopping_list", () => {
-  test("POST 201 - post new ingredients to shopping_list", () => {
+  test("POST 400 - bad request, wrong body", () => {
     return request(app)
-      .post("/api/shopping_list")
-      .send({ body: ["cheese", "bread", "butter"] })
-      .expect(201);
+      .post("/api/recipes")
+      .send({ boddy: "blabla", pic: "cheese" })
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("bad request");
+      });
+  });
+  test("POST 400 - bad request, wrong pic name", () => {
+    return request(app)
+      .post("/api/recipes")
+      .send({ body: "blabla", picture: "cheese" })
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("bad request");
+      });
   });
 });
 
@@ -249,7 +416,7 @@ describe("POST ingredients to shopping_list", () => {
 describe("ERROR 404 - end point not found", () => {
   test("if the end point is not found a message saying link not found is returned", () => {
     return request(app)
-      .get("/sfjkbwkjdbwkjf")
+      .get("/api/sfjkbwkjdbwkjf")
       .expect(404)
       .then(({ body }) => {
         expect(body.msg).toEqual("link not found");

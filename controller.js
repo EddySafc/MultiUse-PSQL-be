@@ -11,14 +11,21 @@ const {
   selectUsers,
   provideUsers,
   removeUserById,
-  selectUserById,
-  changeUsers,
   updateUsers,
   selectRecipes,
   provideRecipe,
-  provideIngredients,
-  selectIngredients,
+  fetchEndPointsDescription,
 } = require("./model");
+
+exports.getEndpointsDescription = (req, res, next) => {
+  fetchEndPointsDescription()
+    .then((result) => {
+      res.send(result);
+    })
+    .catch((err) => {
+      next(err);
+    });
+};
 
 exports.getDailys = (req, res, next) => {
   selectDailys()
@@ -91,52 +98,76 @@ exports.postMonthly = (req, res, next) => {
 
 exports.deleteDailyById = (req, res, next) => {
   const { todo_id } = req.params;
-  removeDailyToDoById(todo_id).then((result) => {
-    console.log(result);
-    res.status(204).send(result);
-  });
+  removeDailyToDoById(todo_id)
+    .then((result) => {
+      console.log(result);
+      res.status(204).send(result);
+    })
+    .catch((err) => {
+      next(err);
+    });
 };
 
 exports.deleteWeeklyById = (req, res, next) => {
   const { todo_id } = req.params;
-  removeWeeklyToDoById(todo_id).then((result) => {
-    console.log(result);
-    res.status(204).send(result);
-  });
+  removeWeeklyToDoById(todo_id)
+    .then((result) => {
+      console.log(result);
+      res.status(204).send(result);
+    })
+    .catch((err) => {
+      next(err);
+    });
 };
 
 exports.deleteMonthlyById = (req, res, next) => {
   const { todo_id } = req.params;
-  removeMonthlyToDoById(todo_id).then((result) => {
-    console.log(result);
-    res.status(204).send(result);
-  });
+  removeMonthlyToDoById(todo_id)
+    .then((result) => {
+      console.log(result);
+      res.status(204).send(result);
+    })
+    .catch((err) => {
+      next(err);
+    });
 };
 
 //--------------------------------------------------------
 
-exports.getUsers = (req, res) => {
-  selectUsers().then((result) => {
-    console.log("get users:", result);
-    res.send({ result });
-  });
+exports.getUsers = (req, res, next) => {
+  selectUsers()
+    .then((result) => {
+      console.log("get users:", result);
+      res.send({ result });
+    })
+    .catch((err) => {
+      next(err);
+    });
 };
 
-exports.postUsers = (req, res) => {
+exports.postUsers = (req, res, next) => {
   const newItem = req.body;
-  provideUsers(newItem).then((result) => {
-    console.log("post user:", result);
-    res.status(201).send({ result });
-  });
+  provideUsers(newItem)
+    .then((result) => {
+      console.log("post user:", result);
+      res.status(201).send({ result });
+    })
+    .catch((err) => {
+      next(err);
+    });
 };
 
-exports.patchUsers = (req, res) => {
+exports.patchUsers = (req, res, next) => {
   const { user_id } = req.params;
   const { inc_score } = req.body;
-  updateUsers(user_id, inc_score).then((result) => {
-    console.log("controller result:", result);
-    res.status(201).send(result);
-  });
+  updateUsers(user_id, inc_score)
+    .then((result) => {
+      console.log("controller result:", result);
+      res.status(201).send(result);
+    })
+    .catch((err) => {
+      next(err);
+    });
 };
 
 exports.patchReviewVotes = (req, res, next) => {
@@ -151,40 +182,37 @@ exports.patchReviewVotes = (req, res, next) => {
     });
 };
 
-exports.deleteUserById = (req, res) => {
+exports.deleteUserById = (req, res, next) => {
   const { user_id } = req.params;
-  removeUserById(user_id).then((result) => {
-    console.log(result);
-    res.status(204).send(result);
-  });
+  removeUserById(user_id)
+    .then((result) => {
+      console.log(result);
+      res.status(204).send(result);
+    })
+    .catch((err) => {
+      next(err);
+    });
 };
 
 //-------------------------------------------------------------------
 
-exports.getRecipes = (req, res) => {
-  selectRecipes().then((result) => {
-    res.send({ result });
-  });
+exports.getRecipes = (req, res, next) => {
+  selectRecipes()
+    .then((result) => {
+      res.send({ result });
+    })
+    .catch((err) => {
+      next(err);
+    });
 };
 
-exports.postRecipe = (req, res) => {
+exports.postRecipe = (req, res, next) => {
   const newRecipe = req.body;
-  provideRecipe(newRecipe).then((result) => {
-    res.status(201).send({ result });
-  });
-};
-
-exports.postIngredients = (req, res) => {
-  const newIngredients = req.body;
-  provideIngredients(newIngredients).then((result) => {
-    console.log("post shopping_list:", result);
-    res.status(201).send({ result });
-  });
-};
-
-exports.getIngredients = (req, res) => {
-  selectIngredients().then((result) => {
-    console.log("get shopping_list:", { result });
-    res.send({ result });
-  });
+  provideRecipe(newRecipe)
+    .then((result) => {
+      res.status(201).send({ result });
+    })
+    .catch((err) => {
+      next(err);
+    });
 };

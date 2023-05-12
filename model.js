@@ -1,5 +1,9 @@
 const db = require("./db/connection");
 
+exports.fetchEndPointsDescription = () => {
+  return "hello";
+};
+
 exports.selectDailys = () => {
   return db.query("SELECT * FROM dailys;").then((result) => {
     return result.rows;
@@ -87,6 +91,9 @@ exports.removeDailyToDoById = (todo_id) => {
       [todo_id]
     )
     .then((result) => {
+      if (!result.rows[0]) {
+        return Promise.reject({ status: 404, msg: "id not found" });
+      }
       return result.rows[0];
     });
 };
@@ -100,6 +107,9 @@ exports.removeWeeklyToDoById = (todo_id) => {
       [todo_id]
     )
     .then((result) => {
+      if (!result.rows[0]) {
+        return Promise.reject({ status: 404, msg: "id not found" });
+      }
       return result.rows[0];
     });
 };
@@ -113,6 +123,9 @@ exports.removeMonthlyToDoById = (todo_id) => {
       [todo_id]
     )
     .then((result) => {
+      if (!result.rows[0]) {
+        return Promise.reject({ status: 404, msg: "id not found" });
+      }
       return result.rows[0];
     });
 };
@@ -120,6 +133,9 @@ exports.removeMonthlyToDoById = (todo_id) => {
 //-------------------------------------------------------------------
 
 exports.provideUsers = (newItem) => {
+  if (newItem.hasOwnProperty("body") === false) {
+    return Promise.reject({ status: 400, msg: "bad request" });
+  }
   return db
     .query(
       `INSERT INTO users
@@ -130,6 +146,9 @@ exports.provideUsers = (newItem) => {
     )
     .then((result) => {
       return result.rows[0];
+    })
+    .catch((err) => {
+      return Promise.reject(err);
     });
 };
 
@@ -140,6 +159,9 @@ exports.selectUsers = () => {
 };
 
 exports.updateUsers = (user_id, inc_score) => {
+  if (!inc_score) {
+    return Promise.reject({ status: 400, msg: "bad request" });
+  }
   console.log("user_id:", user_id, "inc_score:", inc_score);
   return db
     .query(
@@ -157,23 +179,6 @@ exports.updateUsers = (user_id, inc_score) => {
     });
 };
 
-exports.updateReviewVotes = (review_id, inc_votes) => {
-  return db
-    .query(
-      `UPDATE reviews
-    SET votes = votes + $1
-    WHERE review_id = $2
-    RETURNING*;`,
-      [inc_votes, review_id]
-    )
-    .then((result) => {
-      if (!result.rows[0]) {
-        return Promise.reject({ status: 404, msg: "id not found" });
-      }
-      return result.rows;
-    });
-};
-
 exports.removeUserById = (user_id) => {
   return db
     .query(
@@ -183,6 +188,9 @@ exports.removeUserById = (user_id) => {
       [user_id]
     )
     .then((result) => {
+      if (!result.rows[0]) {
+        return Promise.reject({ status: 404, msg: "id not found" });
+      }
       return result.rows[0];
     });
 };
@@ -196,6 +204,12 @@ exports.selectRecipes = () => {
 };
 
 exports.provideRecipe = (newRecipe) => {
+  if (newRecipe.hasOwnProperty("body") === false) {
+    return Promise.reject({ status: 400, msg: "bad request" });
+  }
+  if (newRecipe.hasOwnProperty("pic") === false) {
+    return Promise.reject({ status: 400, msg: "bad request" });
+  }
   return db
     .query(
       `INSERT INTO all_recipes 
@@ -206,25 +220,8 @@ exports.provideRecipe = (newRecipe) => {
     )
     .then((result) => {
       return result.rows[0];
+    })
+    .catch((err) => {
+      return Promise.reject(err);
     });
-};
-
-exports.provideIngredients = (newIngredients) => {
-  return db
-    .query(
-      `INSERT INTO shopping_list
-    (ingredient, measure)
-    VALUES
-    ($1, $2) RETURNING*`,
-      [newIngredients.body, newIngredients.measure_body]
-    )
-    .then((result) => {
-      return result.rows;
-    });
-};
-
-exports.selectIngredients = () => {
-  return db.query(`SELECT * FROM shopping_list;`).then((result) => {
-    return result.rows;
-  });
 };
