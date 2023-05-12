@@ -26,6 +26,10 @@ app.use(express.json());
 
 app.get("/", getEndpointsDescription);
 
+// app.get("/*", (req, res) => {
+//   res.status(404).send({ msg: "link not found" });
+// });
+
 //-------------ToDoList Project--------------------------
 
 app.get("/api/dailys", getDailys);

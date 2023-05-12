@@ -16,7 +16,7 @@ const {
   provideRecipe,
 } = require("./model");
 
-exports.getEndpointsDescription = () => {
+exports.getEndpointsDescription = (req, res) => {
   res.send({ msg: "endpoints:" });
 };
 
