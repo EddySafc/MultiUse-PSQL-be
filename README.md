@@ -42,7 +42,7 @@ To clone you must first:
 
     This will allow you to test the functionality of the API with a much smaller database saving you time.
 
-- Next we must initialise the databse with these commands.
+- next we must initialise the databse with these commands.
 
   ```sh
   npm run setup-dbs; npm run seed
