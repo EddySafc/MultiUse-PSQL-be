@@ -381,20 +381,20 @@ describe("POST recipe to all_recipes", () => {
   test("POST 201 - post new recipe to all_recipes", () => {
     return request(app)
       .post("/api/recipes")
-      .send({ body: "cheese sarny", pic: "cheese" })
+      .send({ id: 5, body: "cheese sarny", pic: "cheese" })
       .expect(201)
       .then(({ body }) => {
         expect(body.result).toMatchObject({
           recipe_id: 5,
           recipe_name: "cheese sarny",
-          recipe_pic: null,
+          recipe_pic: "cheese",
         });
       });
   });
   test("POST 400 - bad request, wrong body", () => {
     return request(app)
       .post("/api/recipes")
-      .send({ boddy: "blabla", pic: "cheese" })
+      .send({ id: 5, boddy: "blabla", pic: "cheese" })
       .expect(400)
       .then(({ body }) => {
         expect(body.msg).toBe("bad request");
@@ -403,7 +403,7 @@ describe("POST recipe to all_recipes", () => {
   test("POST 400 - bad request, wrong pic name", () => {
     return request(app)
       .post("/api/recipes")
-      .send({ body: "blabla", picture: "cheese" })
+      .send({ id: 5, body: "blabla", picture: "cheese" })
       .expect(400)
       .then(({ body }) => {
         expect(body.msg).toBe("bad request");

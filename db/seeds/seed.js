@@ -87,7 +87,7 @@ const seed = async (data) => {
   //-------------------------------------------------------------
 
   await db.query(`CREATE TABLE all_recipes (
-  recipe_id SERIAL,
+  recipe_id INT,
   recipe_name TEXT,
   recipe_pic TEXT
   );`);
@@ -100,9 +100,9 @@ const seed = async (data) => {
   if (recipeData.length > 0) {
     const insertRecipeQueryStr = format(
       `INSERT INTO all_recipes
-      (recipe_name, recipe_pic)
+      (recipe_id, recipe_name, recipe_pic)
     VALUES %L RETURNING *;`,
-      recipeData.map(({ body, pic }) => [body, pic])
+      recipeData.map(({ id, body, pic }) => [id, body, pic])
     );
 
     await db.query(insertRecipeQueryStr).then((result) => result.rows);

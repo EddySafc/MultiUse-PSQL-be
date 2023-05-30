@@ -200,6 +200,7 @@ exports.selectRecipes = () => {
 };
 
 exports.provideRecipe = (newRecipe) => {
+  //console.log(newRecipe.id, newRecipe.body, newRecipe.pic);
   if (newRecipe.hasOwnProperty("body") === false) {
     return Promise.reject({ status: 400, msg: "bad request" });
   }
@@ -209,10 +210,10 @@ exports.provideRecipe = (newRecipe) => {
   return db
     .query(
       `INSERT INTO all_recipes 
-  (recipe_name, recipe_pic)
+  (recipe_id,recipe_name, recipe_pic)
   VALUES
-  ($1,$2) RETURNING*`,
-      [newRecipe.body, newRecipe.recipe_pic]
+  ($1,$2,$3) RETURNING*`,
+      [newRecipe.id, newRecipe.body, newRecipe.pic]
     )
     .then((result) => {
       return result.rows[0];
