@@ -8,13 +8,11 @@ const seed = async (data) => {
   const monthlyData = data.monthlyData;
   const userData = data.userData;
   const recipeData = data.recipeData;
-  const shoppingListData = data.shoppingListData;
 
   await db.query(`DROP TABLE IF EXISTS dailys;`);
   await db.query(`DROP TABLE IF EXISTS weeklys;`);
   await db.query(`DROP TABLE IF EXISTS monthlys;`);
   await db.query(`DROP TABLE IF EXISTS all_recipes;`);
-  await db.query(`DROP TABLE IF EXISTS shopping_list`);
 
   await db.query(`CREATE TABLE dailys (
     todo_id SERIAL,
@@ -87,15 +85,10 @@ const seed = async (data) => {
   //-------------------------------------------------------------
 
   await db.query(`CREATE TABLE all_recipes (
-  recipe_id INT,
+  recipe_id INT NOT NULL,
   recipe_name TEXT,
   recipe_pic TEXT
   );`);
-
-  await db.query(`CREATE TABLE shopping_list (
-  ingredient TEXT,
-  measure TEXT
-  )`);
 
   if (recipeData.length > 0) {
     const insertRecipeQueryStr = format(
@@ -106,17 +99,6 @@ const seed = async (data) => {
     );
 
     await db.query(insertRecipeQueryStr).then((result) => result.rows);
-  }
-
-  if (shoppingListData.length > 0) {
-    const insertShoppingListQueryStr = format(
-      `INSERT INTO shopping_list
-    (ingredient, measure)
-  VALUES %L RETURNING *;`,
-      shoppingListData.map(({ ingredient, measure }) => [ingredient, measure])
-    );
-
-    await db.query(insertShoppingListQueryStr).then((result) => result.rows);
   }
 };
 module.exports = seed;

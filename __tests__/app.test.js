@@ -128,6 +128,18 @@ describe("POST item to dailys", () => {
         expect(body.msg).toBe("bad request");
       });
   });
+  test("POST 201 - extra unwanted key in body", () => {
+    return request(app)
+      .post("/api/dailys")
+      .send({ body: "walk", item_id: 99, unwantedKey: "unwanted" })
+      .expect(201)
+      .then(({ body }) => {
+        expect(body.result).toMatchObject({
+          todo_id: 99,
+          todo_name: "walk",
+        });
+      });
+  });
 });
 
 describe("POST item to weeklys", () => {
@@ -179,6 +191,18 @@ describe("POST item to weeklys", () => {
         expect(body.msg).toBe("bad request");
       });
   });
+  test("POST 201 - extra unwanted key in body", () => {
+    return request(app)
+      .post("/api/weeklys")
+      .send({ body: "walk", item_id: 99, unwantedKey: "unwanted" })
+      .expect(201)
+      .then(({ body }) => {
+        expect(body.result).toMatchObject({
+          todo_id: 99,
+          todo_name: "walk",
+        });
+      });
+  });
 });
 
 describe("POST item to monthlys", () => {
@@ -228,6 +252,18 @@ describe("POST item to monthlys", () => {
       .expect(400)
       .then(({ body }) => {
         expect(body.msg).toBe("bad request");
+      });
+  });
+  test("POST 201 - extra unwanted key in body", () => {
+    return request(app)
+      .post("/api/monthlys")
+      .send({ body: "walk", item_id: 99, unwantedKey: "unwanted" })
+      .expect(201)
+      .then(({ body }) => {
+        expect(body.result).toMatchObject({
+          todo_id: 99,
+          todo_name: "walk",
+        });
       });
   });
 });
@@ -294,6 +330,28 @@ describe("POST item to users", () => {
         expect(body.msg).toBe("bad request");
       });
   });
+  test("POST 400 - bad request, missing body", () => {
+    return request(app)
+      .post("/api/users")
+      .send({})
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("bad request");
+      });
+  });
+  test("POST 201 - Extra unwanted key in body", () => {
+    return request(app)
+      .post("/api/users")
+      .send({ body: "greg", unwantedKey: 7 })
+      .expect(201)
+      .then(({ body }) => {
+        expect(body.result).toMatchObject({
+          user_id: 3,
+          user_name: "greg",
+          score: 0,
+        });
+      });
+  });
 });
 
 describe("PATCH score of user", () => {
@@ -348,6 +406,12 @@ describe("PATCH score of user", () => {
         expect(body.msg).toBe("bad request");
       });
   });
+  test("PATCH 201 - extra unwanted key in body", () => {
+    return request(app)
+      .patch("/api/users/1")
+      .send({ inc_score: 1, unwantedKey: "unwanted" })
+      .expect(201);
+  });
 });
 
 describe("12. DELETE /api/users/:user_id", () => {
@@ -391,7 +455,7 @@ describe("POST recipe to all_recipes", () => {
         });
       });
   });
-  test("POST 400 - bad request, wrong body", () => {
+  test("POST 400 - bad request, wrong body key", () => {
     return request(app)
       .post("/api/recipes")
       .send({ id: 5, boddy: "blabla", pic: "cheese" })
@@ -400,12 +464,50 @@ describe("POST recipe to all_recipes", () => {
         expect(body.msg).toBe("bad request");
       });
   });
-  test("POST 400 - bad request, wrong pic name", () => {
+  test("POST 400 - bad request, wrong pic key", () => {
     return request(app)
       .post("/api/recipes")
       .send({ id: 5, body: "blabla", picture: "cheese" })
       .expect(400)
       .then(({ body }) => {
+        expect(body.msg).toBe("bad request");
+      });
+  });
+  test("POST 400 - bad request, wrong id key", () => {
+    return request(app)
+      .post("/api/recipes")
+      .send({ iidd: 5, body: "blabla", pic: "cheese" })
+      .expect(400)
+      .then(({ body }) => {
+        console.log("test:", body);
+        expect(body.msg).toBe("bad request");
+      });
+  });
+  test("POST 400 - bad request, missing body", () => {
+    return request(app)
+      .post("/api/recipes")
+      .send({ id: 5, picture: "cheese" })
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("bad request");
+      });
+  });
+  test("POST 400 - bad request, missing pic", () => {
+    return request(app)
+      .post("/api/recipes")
+      .send({ id: 5, body: "blabla" })
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("bad request");
+      });
+  });
+  test("POST 400 - bad request, missing id", () => {
+    return request(app)
+      .post("/api/recipes")
+      .send({ body: "blabla", pic: "cheese" })
+      .expect(400)
+      .then(({ body }) => {
+        console.log("test:", body);
         expect(body.msg).toBe("bad request");
       });
   });
