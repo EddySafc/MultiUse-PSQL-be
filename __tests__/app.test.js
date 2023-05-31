@@ -295,7 +295,7 @@ describe("GET users", () => {
       .expect(200)
       .then(({ body }) => {
         console.log("body:", body);
-        expect(body.result.length).toBe(2);
+        expect(body.result.length).toBe(4);
         body.result.forEach((user) => {
           expect(user).toMatchObject({
             score: expect.any(Number),
@@ -303,6 +303,7 @@ describe("GET users", () => {
             user_name: expect.any(String),
           });
         });
+        expect(body.result).toBeSortedBy("score", { descending: true });
       });
   });
 });
@@ -315,7 +316,7 @@ describe("POST item to users", () => {
       .expect(201)
       .then(({ body }) => {
         expect(body.result).toMatchObject({
-          user_id: 3,
+          user_id: 5,
           user_name: "greg",
           score: 0,
         });
@@ -346,7 +347,7 @@ describe("POST item to users", () => {
       .expect(201)
       .then(({ body }) => {
         expect(body.result).toMatchObject({
-          user_id: 3,
+          user_id: 5,
           user_name: "greg",
           score: 0,
         });
